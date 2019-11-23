@@ -18,6 +18,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Formatter;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     int month;
     int day;
     private String sign;
+    private String horo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        String river = "<div class=\"article__item article__item_alignment_left article__item_html\"><p>Спокойный день. Его нельзя назвать совершенно лишенным трудностей, но в целом ситуация складывается неплохо, и вы понимаете, как нужно действовать, чтобы достичь успеха. Могут появиться новые планы, в осуществлении которых помогут проверенные союзники, старые знакомые.</p>\n" +
+                "\n" +
+                "<p>Вероятны незапланированные поездки. Собираться в дорогу придется быстро, но вы ничего не забудете и не упустите. Вдали от дома вероятны удачные покупки. Вы обращаете внимание на необычные вещи, которые долго будут радовать. Также не исключены интересные знакомства.</p>";
+        Pattern pattern = Pattern.compile("<div class=\"article__item article__item_alignment_left article__item_html\"><p>(.*?)</p>");
+        Matcher matcher = pattern.matcher(river);
+        while (matcher.find()) {
+            horo = matcher.group(1);
+        }
 
     }
 
