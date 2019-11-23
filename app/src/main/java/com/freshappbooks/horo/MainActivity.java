@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Formatter;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,23 +24,24 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MyApp";
     private static String mailRu = "https://horo.mail.ru/prediction/sagittarius/today/";
-    Button button;
+    Button btn_ok, btn_match;
     DatePicker picker;
     int month;
     int day;
     private String sign;
-    private String horo;
+    public static String horo;
+    private String resultTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = findViewById(R.id.btn_ok);
+        btn_ok = findViewById(R.id.btn_ok);
         picker = findViewById(R.id.datePicker);
 //        mailRu = String.format(mailRu, sign);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 month = picker.getMonth();
@@ -51,23 +51,29 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: " + sign);
                 DownloadTask task = new DownloadTask();
                 try {
-                    String result = task.execute(mailRu).get();
-                    Log.d(TAG, "onClick: + result " + result);
-                } catch (ExecutionException e) {
+                    resultTask = task.execute(mailRu).get();
+                    Log.d(TAG, "onClick: result = " + resultTask);
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                }
+
+                String river = "<div class=\"article__item article__item_alignment_left article__item_html\"><p>Спокойный день. Его нельзя назвать совершенно лишенным трудностей, но в целом ситуация складывается неплохо, и вы понимаете, как нужно действовать, чтобы достичь успеха. Могут появиться новые планы, в осуществлении которых помогут проверенные союзники, старые знакомые.</p>\n" +
+                        "\n" +
+                        "<p>Вероятны незапланированные поездки. Собираться в дорогу придется быстро, но вы ничего не забудете и не упустите. Вдали от дома вероятны удачные покупки. Вы обращаете внимание на необычные вещи, которые долго будут радовать. Также не исключены интересные знакомства.</p>";
+                String parse = "<!DOCTYPE html><html><head><link rel=\"stylesheet\" href=\"/-/01d7ee44/bem/horo/touch/touch.bundles/common/_common.css\"/><meta name=\"viewport\" content=\"width=device-width, user-scalable=no, maximum-scale=1.0, initial-scale=1.0, minimum-scale=1.0\"/><meta charset=\"UTF-8\"/><meta name=\"theme-color\" content=\"#005FF9\"/><link rel=\"amphtml\" href=\"https://horo.mail.ru/amp/prediction/sagittarius/today/\"/><link rel=\"apple-touch-startup-image\" href=\"/img/mobile/touch/apple-touch-icon.png\"/><link rel=\"apple-touch-icon-precomposed\" href=\"/img/mobile/touch/apple-touch-icon.png\"/><link rel=\"apple-touch-icon\" href=\"/img/mobile/touch/apple-touch-icon.png\"/><title>Гороскоп на сегодня - для знака зодиака Стрелец - Гороскопы Mail.ru</title><meta name=\"description\" content=\"Бесплатный гороскоп на сегодня - для знака Зодиака Стрелец - для планирования дел, любовных, дружеских и семейных отношений\"/><meta name=\"keywords\" content=\"стрелец, гороскоп, на сегодня, все знаки\"/><meta property=\"og:site_name\" content=\"Гороскопы Mail.ru\"/><meta property=\"og:title\" content=\"Гороскоп для Стрельца на сегодня\"/><meta name=\"mrc__share_title\" content=\"Гороскоп для Стрельца на сегодня\"/><meta property=\"og:description\" content=\"Спокойный день. Его нельзя назвать совершенно лишенным трудностей, но в целом ситуация складывается неплохо, и вы понимаете, как нужно действовать...\"/><meta name=\"mrc__share_description\" content=\"Спокойный день. Его нельзя назвать совершенно лишенным трудностей, но в целом ситуация складывается неплохо, и вы понимаете, как нужно действовать...\"/><link rel=\"image_src\" href=\"https://horo.mail.ru/img/horo/shares/sign/sagittarius.png\"/><meta property=\"og:image\" content=\"https://horo.mail.ru/img/horo/shares/sign/sagittarius.png\"/><link rel=\"manifest\" href=\"/manifest.json\"/><link rel=\"canonical\" href=\"https://horo.mail.ru/prediction/sagittarius/today/\"/><meta property=\"browsing_history_id\" content=\"h9\"/><meta name=\"csrf-token\" content=\"AG_TCPNxVQgAXh5rnRdk2F3S\" /><script src=\"/-/b9450a22/js/cmpld/horo/touch/head.js\"></script><!-- /rb/38218?_SITEZONE=10 --><script type=\"text/javascript\">window._logJsErrors = true;</script><!-- //rb/38218?_SITEZONE=10 --></head><body class=\"js-module\" data-module=\"MainMenu,PushNotificationsModel\" data-view=\"PushNotificationsView\" data-mp=\"LazyItem as LazyBody\"><div class=\"popup-shown__hide\"><div class=\"wrapper wrapper_inner\">\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\" js-module\" data-module=\"SlotModel\" data-view=\"SlotView.36359\" data-id=\"36359\" data-siteid=\"104\"></div>\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div></div><div class=\"overlay js-popup\"><div class=\"overlay__wrapper js-popup_cont\"></div></div><div id=\"layout\"><div class=\"portal-headline popup-shown__hide\"><div class=\"portal-headline__wrap\"><div class=\"portal-headline__toolbar portal-headline__toolbar_left\"><div class=\"portal-headline__button js-menu_toggle\" name=\"clb36323428\"><div class=\"portal-headline__button-icon portal-headline__button-icon_menu\"></div></div></div><div class=\"portal-headline__toolbar portal-headline__toolbar_logotype\"><a class=\"portal-headline__logotype\" href=\"//lady.mail.ru\"><img class=\"portal-headline__logotype-image\" src=\"/img/logo/lady/lady_touch.svg\"/></a></div></div></div><div class=\"wrapper wrapper_content wrapper_page js-layout popup-shown__hide\"><script>\t\t\t\tvar aProjectList =     [      {\"name\": \"Mail.Ru\", \"url\": \"https://r.mail.ru/n157643803?sz=10&rnd=194586325\", \"alias\": \"Mail.Ru\"}         ,{\"name\": \"Почта\", \"url\": \"https://r.mail.ru/n156861861?sz=10&rnd=194586325\"}         ,{\"name\": \"Мой Мир\", \"url\": \"https://";
+
+
+                Pattern pattern = Pattern.compile("<div class=\"article__item article__item_alignment_left article__item_html\"><p>(.*?)</p>");
+                Matcher matcher = pattern.matcher(river);
+                if (matcher.find()){
+                    horo = matcher.group(1);
+                    Log.d(TAG, "onCreate: Mather = " + horo);
+                } else {
+                    Log.d(TAG, "onClick: Mather" + "Нету");
                 }
             }
         });
-        String river = "<div class=\"article__item article__item_alignment_left article__item_html\"><p>Спокойный день. Его нельзя назвать совершенно лишенным трудностей, но в целом ситуация складывается неплохо, и вы понимаете, как нужно действовать, чтобы достичь успеха. Могут появиться новые планы, в осуществлении которых помогут проверенные союзники, старые знакомые.</p>\n" +
-                "\n" +
-                "<p>Вероятны незапланированные поездки. Собираться в дорогу придется быстро, но вы ничего не забудете и не упустите. Вдали от дома вероятны удачные покупки. Вы обращаете внимание на необычные вещи, которые долго будут радовать. Также не исключены интересные знакомства.</p>";
-        Pattern pattern = Pattern.compile("<div class=\"article__item article__item_alignment_left article__item_html\"><p>(.*?)</p>");
-        Matcher matcher = pattern.matcher(river);
-        while (matcher.find()) {
-            horo = matcher.group(1);
-        }
+
 
     }
 
